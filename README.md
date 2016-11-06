@@ -10,7 +10,7 @@ php composer.phar require "moein7tl/yii2-automigrate:dev-master"
 or add following line to `composer.json` and run `composer update`
 
 ```json
-"moein7tl/yii2-automigrate": "dev-master
+"moein7tl/yii2-automigrate": "dev-master"
 ```
 
 ## Configuration
