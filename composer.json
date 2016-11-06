@@ -1,0 +1,21 @@
+{
+    "name": "moein7tl/yii2-automigrate",
+    "description": "Easy way to run migrations in yii2 from different paths and databases",
+    "type": "library",
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Moein Hosseini Manesh",
+            "email": "moein7tl@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "moein7tl\\autoMigrate\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
