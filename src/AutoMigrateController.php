@@ -27,17 +27,18 @@ class AutoMigrateController extends Controller {
     public function actionUp()
     {
         $migrations =   $this->readAndSortMigrations($this->config['relational']);
-        $this->migrateSQL($migrations);
+        if (count($migrations) > 0) $this->migrateSQL($migrations);
+        
         $migrations =   $this->readAndSortMigrations($this->config['mongodb']);
-        $this->migrateMongoDB($migrations);
+        if (count($migrations) > 0) $this->migrateMongoDB($migrations);
     }
 
     public function actionDown()
     {
         $migrations =   $this->readAndSortMigrations($this->config['relational'], SORT_DESC);
-        $this->rollbackSQL($migrations);
+        if (count($migrations) > 0) $this->rollbackSQL($migrations);
         $migrations =   $this->readAndSortMigrations($this->config['mongodb'], SORT_DESC);
-        $this->rollbackMongoDB($migrations);
+        if (count($migrations) > 0) $this->rollbackMongoDB($migrations);
     }
 
     public function readAndSortMigrations($directories = [], $sort  =   SORT_ASC)
