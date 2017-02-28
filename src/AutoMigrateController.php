@@ -12,7 +12,7 @@ use yii\console\Controller;
 class AutoMigrateController extends Controller {
 
     private $config =   [];
-    
+
     public function init()
     {
         $this->config   =   require 'config'.DIRECTORY_SEPARATOR.'migrations.php';
@@ -27,18 +27,18 @@ class AutoMigrateController extends Controller {
     public function actionUp()
     {
         $migrations =   $this->readAndSortMigrations($this->config['relational']);
-        if (count($migrations) > 0) $this->migrateSQL($migrations);
-        
+        $this->migrateSQL($migrations);
+
         $migrations =   $this->readAndSortMigrations($this->config['mongodb']);
-        if (count($migrations) > 0) $this->migrateMongoDB($migrations);
+        $this->migrateMongoDB($migrations);
     }
 
     public function actionDown()
     {
         $migrations =   $this->readAndSortMigrations($this->config['relational'], SORT_DESC);
-        if (count($migrations) > 0) $this->rollbackSQL($migrations);
+        $this->rollbackSQL($migrations);
         $migrations =   $this->readAndSortMigrations($this->config['mongodb'], SORT_DESC);
-        if (count($migrations) > 0) $this->rollbackMongoDB($migrations);
+        $this->rollbackMongoDB($migrations);
     }
 
     public function readAndSortMigrations($directories = [], $sort  =   SORT_ASC)
@@ -91,48 +91,18 @@ class AutoMigrateController extends Controller {
 
     private function migrate($path, $type = 'sql')
     {
-        $app        =   Yii::$app;
         $controller =   ($type === 'sql')?'migrate':'mongodb-migrate';
-
-        new Yii\console\Application([
-            'id'            =>  'Migrations',
-            'basePath'      =>  '@app',
-            'components'    =>  [
-                'db'            =>  $app->db,
-                'mongodb'       =>  $app->mongodb,
-                'authManager'   =>  $app->authManager
-            ],
-            'controllerMap' => [
-                'mongodb-migrate'   =>  'yii\mongodb\console\controllers\MigrateController'
-            ]
-        ]);
 
         Yii::$app->runAction("{$controller}/up",[
             1,
             'migrationPath' =>  $path,
             'interactive'   =>  false
         ]);
-
-        Yii::$app   =   $app;
     }
 
     private function rollback($mark, $path, $type = 'sql')
     {
-        $app        =   Yii::$app;
         $controller =   ($type === 'sql')?'migrate':'mongodb-migrate';
-
-        new Yii\console\Application([
-            'id'            =>  'Migrations',
-            'basePath'      =>  '@app',
-            'components'    =>  [
-                'db'            =>  $app->db,
-                'mongodb'       =>  $app->mongodb,
-                'authManager'   =>  $app->authManager
-            ],
-            'controllerMap' => [
-                'mongodb-migrate'   =>  'yii\mongodb\console\controllers\MigrateController'
-            ]
-        ]);
 
         Yii::$app->runAction("{$controller}/mark",[
             $mark,
@@ -146,7 +116,5 @@ class AutoMigrateController extends Controller {
             'interactive'   =>  false
         ]);
 
-        Yii::$app   =   $app;
     }
 }
-
