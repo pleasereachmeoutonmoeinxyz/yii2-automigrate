@@ -1,7 +1,7 @@
 # Yii2 Auto Migrate Package
 This package helps you to run migrations from different paths and databases in easier way.
  
-##Installation
+## Installation
 
 ```
 php composer.phar require "moein7tl/yii2-automigrate:dev-master" 
